@@ -48,7 +48,7 @@
   </form>
 
   <script>
-    const productCount = [
+    const productList = [
 "4004876-9 Local CANBUS Ext 9 ft",
 "4004876-2 Local CANBUS Ext 2 ft",
 "4004876-12 Local CANBUS Ext 12 ft",
@@ -349,6 +349,7 @@
 "Overview Extention (10ft)",
 "BR1 Mini Mounting"
     ];
+let productCount = 0;
     function addProduct() {
       if (productCount >= 10) return alert("Max 10 products allowed");
       const div = document.createElement("div");
