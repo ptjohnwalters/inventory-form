@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory Checkout Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    .product-group {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>Inventory Checkout Form</h2>
+  <form id="checkout-form">
+    <div id="product-list"></div>
+
+    <button type="button" onclick="addProduct()">Add Product</button>
+    <br><br>
+
+    <label>Location:
+      <select name="location" required>
+        <option value="Trailer">Trailer</option>
+        <option value="Warehouse">Warehouse</option>
+        <option value="Alec">Alec</option>
+        <option value="Master">Master</option>
+      </select>
+    </label>
+
+    <label>Job / Customer Name:
+      <input type="text" name="customer" required>
+    </label>
+
+    <label>Technician Name:
+      <input type="text" name="technician" required>
+    </label>
+
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    let productCount = 0;
+
+    function addProduct() {
+      if (productCount >= 10) return alert("Max 10 products allowed");
+      const div = document.createElement("div");
+      div.className = "product-group";
+      div.innerHTML = `
+        <label>Part # / Product Name:
+          <input name="product${productCount}" required list="productList">
+        </label>
+        <label>Quantity:
+          <select name="qty${productCount}" required>
+            ${[...Array(10)].map((_, i) => `<option>${i + 1}</option>`).join('')}
+          </select>
+        </label>
+      `;
+      document.getElementById("product-list").appendChild(div);
+      productCount++;
+    }
+
+    // Initial product row
+    addProduct();
+
+    document.getElementById("checkout-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      const payload = {
+        timestamp: new Date().toISOString(),
+        location: data.get("location"),
+        customer: data.get("customer"),
+        technician: data.get("technician"),
+        products: []
+      };
+
+      for (let i = 0; i < productCount; i++) {
+        const name = data.get(`product${i}`);
+        const qty = data.get(`qty${i}`);
+        if (name && qty) {
+          payload.products.push({ name, qty });
+        }
+      }
+
+      // Call your Apps Script Web App endpoint here
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzfkv59TACVtAjWJ5lOtK-slFHxIreP4Yd5fx2iKmXGJo97i9ELm2_e4PMVk3UxiJDf/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        alert("Submission sent!");
+        form.reset();
+        document.getElementById("product-list").innerHTML = "";
+        productCount = 0;
+        addProduct();
+      } catch (err) {
+        alert("Submission failed.");
+      }
+    });
+  </script>
+</body>
+</html>
