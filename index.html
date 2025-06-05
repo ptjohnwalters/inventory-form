@@ -68,7 +68,6 @@
   </form>
 
   <script>
-    // Full product list
     const products = [
       "4004876-9 Local CANBUS Ext 9 ft",
       "4004876-2 Local CANBUS Ext 2 ft",
@@ -77,9 +76,6 @@
       "4005945 RCM2 Row to Row Harness",
       "4006224 RCM2 Surespeed cable",
       "4001450-12 High Current Power Extension 12ft",
-      "4004902-8 Downforce Pressure Transducer Cable",
-      "4006191 RCM2 I/O Speed Sensor and Clutch",
-      "4004993-6 Pressure Sensor Ext Downforce",
       "BR1 Mini Mounting"
     ];
 
@@ -91,7 +87,7 @@
       wrapper.style.position = "relative";
       wrapper.innerHTML = `
         <label>Part # / Product Name:
-          <input type="text" name="product${idx}" required autocomplete="off">
+          <input type="text" name="product${idx}" required autocomplete="off" style="width: 90%;">
           <div class="autocomplete-results" style="display:none;"></div>
         </label>
       `;
@@ -106,7 +102,7 @@
           return;
         }
         const matches = products.filter(p => p.toLowerCase().includes(val)).slice(0, 10);
-        if (matches.length === 0) {
+        if (!matches.length) {
           results.style.display = "none";
           results.innerHTML = "";
           return;
@@ -141,7 +137,9 @@
       }
       const div = document.createElement("div");
       div.className = "product-group";
+      // Add search bar
       div.appendChild(createAutocompleteInput(productCount));
+      // Add qty
       const qtyLabel = document.createElement("label");
       qtyLabel.innerHTML = `Quantity:
         <select name="qty${productCount}" required>
