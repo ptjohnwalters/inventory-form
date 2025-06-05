@@ -9,20 +9,43 @@
     }
     .product-group {
       border: 1px solid #ccc;
-      padding: 1rem;
+      padding: 1rem; 
       margin-bottom: 1rem;
     }
     label {
       display: block;
       margin-top: 0.5rem;
     }
+    .search-bar-container {
+      margin-bottom: 1rem;
+    }
+    #searchResults {
+      max-height: 180px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      display: none;
+      background: white;
+      position: absolute;
+      z-index: 10;
+      width: 95%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #searchResults div {
+      padding: 0.35rem 0.5rem;
+      cursor: pointer;
+    }
+    #searchResults div:hover {
+      background: #f0f0f0;
+    }
+    .relative {
+      position: relative;
+    }
   </style>
 </head>
 <body>
   <h2>Inventory Checkout Form</h2>
-  <form id="checkout-form">
+  <form id="checkout-form" autocomplete="off">
     <div id="product-list"></div>
-
     <button type="button" onclick="addProduct()">Add Product</button>
     <br><br>
 
@@ -351,14 +374,66 @@
     ];
 
     let productCount = 0;
-    
+
+    function highlightMatch(text, term) {
+      if (!term) return text;
+      const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, "ig");
+      return text.replace(regex, '<b>$1</b>');
+    }
+
+    function makeSearchBar(idPrefix) {
+      // Returns HTML for a search bar and an input, and a result box
+      return `
+        <div class="search-bar-container relative">
+          <input type="text" name="${idPrefix}" id="${idPrefix}" required placeholder="Type to search part # or product name..." autocomplete="off" oninput="showSearchResults(event, '${idPrefix}')" onfocus="showSearchResults(event, '${idPrefix}')">
+          <div class="search-results" id="searchResults-${idPrefix}"></div>
+        </div>
+      `;
+    }
+
+    window.showSearchResults = function(e, idPrefix) {
+      const val = e.target.value.trim();
+      const resultsDiv = document.getElementById("searchResults-" + idPrefix);
+      if (val.length === 0) {
+        resultsDiv.style.display = "none";
+        resultsDiv.innerHTML = "";
+        return;
+      }
+      // Filter and show results
+      const filtered = productList.filter(item => item.toLowerCase().includes(val.toLowerCase())).slice(0, 15);
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<div>No matches</div>";
+        resultsDiv.style.display = "block";
+        return;
+      }
+      resultsDiv.innerHTML = filtered.map(item =>
+        `<div onclick="selectSearchResult('${idPrefix}', \`${item.replace(/`/g,"\\`")}\`)">${highlightMatch(item, val)}</div>`
+      ).join("");
+      resultsDiv.style.display = "block";
+    };
+
+    window.selectSearchResult = function(idPrefix, value) {
+      const input = document.getElementById(idPrefix);
+      input.value = value;
+      document.getElementById("searchResults-" + idPrefix).style.display = "none";
+    };
+
+    // Hide search results on click outside
+    document.addEventListener('click', function(event) {
+      document.querySelectorAll('.search-results').forEach(div => {
+        if (!div.contains(event.target) && div.previousElementSibling !== event.target) {
+          div.style.display = "none";
+        }
+      });
+    });
+
     function addProduct() {
       if (productCount >= 10) return alert("Max 10 products allowed");
       const div = document.createElement("div");
       div.className = "product-group";
       div.innerHTML = `
         <label>Part # / Product Name:
-          <input name="product${productCount}" required list="productList">
+          ${makeSearchBar('product'+productCount)}
         </label>
         <label>Quantity:
           <select name="qty${productCount}" required>
@@ -372,16 +447,6 @@
 
     // Initial product row
     addProduct();
-const datalist = document.createElement("datalist");
-datalist.id = "productList";
-
-productList.forEach(item => {
-  const option = document.createElement("option");
-  option.value = item;
-  datalist.appendChild(option);
-});
-
-document.body.appendChild(datalist);
 
     document.getElementById("checkout-form").addEventListener("submit", async function (e) {
       e.preventDefault();
