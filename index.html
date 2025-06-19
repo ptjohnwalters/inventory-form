@@ -4,122 +4,27 @@
   <title>Inventory Checkout Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0 1rem;
-      background: #fafbfc;
-      min-height: 100vh;
-    }
-    h2 {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 1.5rem;
-    }
-    form {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 1.2rem 1rem 1rem 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .product-group {
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      padding: 1rem 0.7rem 0.7rem 0.7rem;
-      margin-bottom: 1rem;
-      position: relative;
-      background: #f7f8fa;
-    }
-    label {
-      display: block;
-      margin-top: 0.8rem;
-      font-size: 1rem;
-    }
-    input[type="text"], select {
-      width: 100%;
-      font-size: 1.1rem;
-      padding: 0.5rem 0.4rem;
-      margin-top: 0.2rem;
-      border: 1px solid #bbb;
-      border-radius: 4px;
-      box-sizing: border-box;
-      background: #fff;
-    }
-    input[type="text"]:focus, select:focus {
-      outline: none;
-      border-color: #007bff;
-    }
-    .autocomplete-results {
-      position: absolute;
-      background: #fff;
-      border: 1px solid #ccc;
-      z-index: 99;
-      max-height: 150px;
-      overflow-y: auto;
-      width: 100%;
-      left: 0;
-      top: 64px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.13);
-    }
-    .autocomplete-result {
-      padding: 10px 15px;
-      cursor: pointer;
-      font-size: 1.05rem;
-    }
-    .autocomplete-result:hover, .autocomplete-result:active {
-      background: #e8efff;
-    }
-    button[type="button"], button[type="submit"] {
-      display: block;
-      width: 100%;
-      margin: 0.8rem 0 0 0;
-      font-size: 1.15rem;
-      padding: 0.7rem;
-      background: #007bff;
-      border: none;
-      color: #fff;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-    button[type="button"]:active, button[type="submit"]:active,
-    button[type="button"]:hover, button[type="submit"]:hover {
-      background: #0056b3;
-    }
+    /* ... your styles ... (unchanged) ... */
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0 1rem; background: #fafbfc; min-height: 100vh; }
+    h2 { text-align: center; margin-top: 1rem; font-size: 1.5rem; }
+    form { max-width: 600px; margin: 0 auto; background: #fff; padding: 1.2rem 1rem 1rem 1rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .product-group { border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem 0.7rem 0.7rem 0.7rem; margin-bottom: 1rem; position: relative; background: #f7f8fa; }
+    label { display: block; margin-top: 0.8rem; font-size: 1rem; }
+    input[type="text"], select { width: 100%; font-size: 1.1rem; padding: 0.5rem 0.4rem; margin-top: 0.2rem; border: 1px solid #bbb; border-radius: 4px; box-sizing: border-box; background: #fff; }
+    input[type="text"]:focus, select:focus { outline: none; border-color: #007bff; }
+    .autocomplete-results { position: absolute; background: #fff; border: 1px solid #ccc; z-index: 99; max-height: 150px; overflow-y: auto; width: 100%; left: 0; top: 64px; box-shadow: 0 2px 6px rgba(0,0,0,0.13); }
+    .autocomplete-result { padding: 10px 15px; cursor: pointer; font-size: 1.05rem; }
+    .autocomplete-result:hover, .autocomplete-result:active { background: #e8efff; }
+    button[type="button"], button[type="submit"] { display: block; width: 100%; margin: 0.8rem 0 0 0; font-size: 1.15rem; padding: 0.7rem; background: #007bff; border: none; color: #fff; border-radius: 5px; font-weight: bold; transition: background 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    button[type="button"]:active, button[type="submit"]:active, button[type="button"]:hover, button[type="submit"]:hover { background: #0056b3; }
     @media (max-width: 500px) {
-      body {
-        padding: 0 0.2rem;
-      }
-      form {
-        max-width: 100%;
-        padding: 0.7rem 0.3rem 0.8rem 0.3rem;
-        border-radius: 0;
-        box-shadow: none;
-      }
-      .product-group {
-        padding: 0.8rem 0.3rem 0.5rem 0.3rem;
-      }
-      h2 {
-        font-size: 1.15rem;
-        margin-top: 0.5rem;
-      }
-      button[type="button"], button[type="submit"] {
-        font-size: 1rem;
-        padding: 0.6rem;
-      }
-      .autocomplete-results {
-        font-size: 0.98rem;
-        max-height: 120px;
-        top: 58px;
-      }
+      body { padding: 0 0.2rem; }
+      form { max-width: 100%; padding: 0.7rem 0.3rem 0.8rem 0.3rem; border-radius: 0; box-shadow: none; }
+      .product-group { padding: 0.8rem 0.3rem 0.5rem 0.3rem; }
+      h2 { font-size: 1.15rem; margin-top: 0.5rem; }
+      button[type="button"], button[type="submit"] { font-size: 1rem; padding: 0.6rem; }
+      .autocomplete-results { font-size: 0.98rem; max-height: 120px; top: 58px; }
     }
   </style>
 </head>
@@ -633,153 +538,152 @@
       "4005763 SURE FORCE ACTUATOR SEAL KIT (NEW)",
       "4101546 160A 24V GENERATOR SEAL KIT",
       "4101533 130A GENERATOR SEAL KIT",
-      "4101532 180A GENERATOR SEAL KIT"
-    ];
+      "4101532 180A GENERATOR SEAL KIT"    ];
 
     let productCount = 0;
     const maxProducts = 10;
-let inventory = {};
+    let inventory = {};
 
-async function fetchInventory() {
-  // Replace this URL with your actual Apps Script web app URL for doGet
-  const url = "https://script.google.com/macros/s/AKfycbzfkv59TACVtAjWJ5lOtK-slFHxIreP4Yd5fx2iKmXGJo97i9ELm2_e4PMVk3UxiJDf/exec";
-  try {
-    const res = await fetch(url);
-    inventory = await res.json();
-  } catch (err) {
-    inventory = {};
-    alert("Could not load inventory.");
-  }
-}
-    
-   function createAutocompleteInput(idx) {
-  const wrapper = document.createElement("div");
-  wrapper.style.position = "relative";
-  wrapper.innerHTML = `
-    <label>Part # / Product Name:
-      <input type="text" name="product${idx}" required autocomplete="off">
-      <div class="autocomplete-results" style="display:none;"></div>
-    </label>
-    <div>
-      <strong>Quantity on hand:</strong>
-      <span class="qty-on-hand" id="qty-on-hand-${idx}">-</span>
-    </div>
-  `;
-  const input = wrapper.querySelector("input");
-  const results = wrapper.querySelector(".autocomplete-results");
-  const qtySpan = wrapper.querySelector(`#qty-on-hand-${idx}`);
-
-  function showQty() {
-    const val = input.value.trim();
-    if (inventory && inventory[val] !== undefined && inventory[val] !== "") {
-      qtySpan.textContent = inventory[val];
-    } else {
-      qtySpan.textContent = "-";
+    async function fetchInventory() {
+      const url = "https://script.google.com/macros/s/AKfycbzfkv59TACVtAjWJ5lOtK-slFHxIreP4Yd5fx2iKmXGJo97i9ELm2_e4PMVk3UxiJDf/exec";
+      try {
+        const res = await fetch(url);
+        inventory = await res.json();
+      } catch (err) {
+        inventory = {};
+        alert("Could not load inventory.");
+      }
     }
-  }
 
-  input.addEventListener("input", function() {
-    const val = input.value.trim().toLowerCase();
-    if (!val) {
-      results.style.display = "none";
-      results.innerHTML = "";
-      qtySpan.textContent = "-";
-      return;
-    }
-    const matches = products.filter(p => p.toLowerCase().includes(val)).slice(0, 10);
-    if (!matches.length) {
-      results.style.display = "none";
-      results.innerHTML = "";
-      qtySpan.textContent = "-";
-      return;
-    }
-    results.innerHTML = matches.map(m => `<div class="autocomplete-result">${m}</div>`).join("");
-    results.style.display = "block";
-    showQty();
-  });
+    function createAutocompleteInput(idx) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+      wrapper.innerHTML = `
+        <label>Part # / Product Name:
+          <input type="text" name="product${idx}" required autocomplete="off">
+          <div class="autocomplete-results" style="display:none;"></div>
+        </label>
+        <div>
+          <strong>Quantity on hand:</strong>
+          <span class="qty-on-hand" id="qty-on-hand-${idx}">-</span>
+        </div>
+      `;
+      const input = wrapper.querySelector("input");
+      const results = wrapper.querySelector(".autocomplete-results");
+      const qtySpan = wrapper.querySelector(`#qty-on-hand-${idx}`);
 
-  results.addEventListener("mousedown", function(e) {
-    if (e.target.classList.contains("autocomplete-result")) {
-      input.value = e.target.textContent;
-      results.style.display = "none";
-      results.innerHTML = "";
-      showQty();
-    }
-  });
-
-  input.addEventListener("blur", function() {
-    setTimeout(() => {
-      results.style.display = "none";
-      showQty();
-    }, 200);
-  });
-
-  input.addEventListener("change", showQty);
-
-  return wrapper;
-}
-
-    // Initial product row
-    function addProduct() {
-  if (productCount >= maxProducts) {
-    alert("Max 10 products allowed");
-    return;
-  }
-  const div = document.createElement("div");
-  div.className = "product-group";
-  div.appendChild(createAutocompleteInput(productCount));
-  const qtyLabel = document.createElement("label");
-  qtyLabel.innerHTML = `Quantity:
-    <select name="qty${productCount}" required>
-      ${[...Array(10)].map((_, i) => `<option>${i + 1}</option>`).join('')}
-    </select>`;
-  div.appendChild(qtyLabel);
-  document.getElementById("product-list").appendChild(div);
-  productCount++;
-}
-   async function initializeForm() {
-  await fetchInventory();
-  document.getElementById("product-list").innerHTML = "";
-  productCount = 0;
-  addProduct();
-}
-
-initializeForm();
-
-    document.getElementById("checkout-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      const payload = {
-        timestamp: new Date().toISOString(),
-        location: data.get("location"),
-        customer: data.get("customer"),
-        technician: data.get("technician"),
-        products: []
-      };
-
-      for (let i = 0; i < productCount; i++) {
-        const name = data.get(`product${i}`);
-        const qty = data.get(`qty${i}`);
-        if (name && qty) {
-          payload.products.push({ name, qty });
+      function showQty() {
+        const val = input.value.trim();
+        if (inventory && inventory[val] !== undefined && inventory[val] !== "") {
+          qtySpan.textContent = inventory[val];
+        } else {
+          qtySpan.textContent = "-";
         }
       }
 
-      // Call your Apps Script Web App endpoint here
-      try {
-        await fetch("https://script.google.com/macros/s/AKfycbzfkv59TACVtAjWJ5lOtK-slFHxIreP4Yd5fx2iKmXGJo97i9ELm2_e4PMVk3UxiJDf/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        alert("Submission sent!");
-form.reset();
-await initializeForm();
-      } catch (err) {
-        alert("Submission failed.");
+      input.addEventListener("input", function() {
+        const val = input.value.trim().toLowerCase();
+        if (!val) {
+          results.style.display = "none";
+          results.innerHTML = "";
+          qtySpan.textContent = "-";
+          return;
+        }
+        const matches = products.filter(p => p.toLowerCase().includes(val)).slice(0, 10);
+        if (!matches.length) {
+          results.style.display = "none";
+          results.innerHTML = "";
+          qtySpan.textContent = "-";
+          return;
+        }
+        results.innerHTML = matches.map(m => `<div class="autocomplete-result">${m}</div>`).join("");
+        results.style.display = "block";
+        showQty();
+      });
+
+      results.addEventListener("mousedown", function(e) {
+        if (e.target.classList.contains("autocomplete-result")) {
+          input.value = e.target.textContent;
+          results.style.display = "none";
+          results.innerHTML = "";
+          showQty();
+        }
+      });
+
+      input.addEventListener("blur", function() {
+        setTimeout(() => {
+          results.style.display = "none";
+          showQty();
+        }, 200);
+      });
+
+      input.addEventListener("change", showQty);
+
+      return wrapper;
+    }
+
+    function addProduct() {
+      if (productCount >= maxProducts) {
+        alert("Max 10 products allowed");
+        return;
       }
+      const div = document.createElement("div");
+      div.className = "product-group";
+      div.appendChild(createAutocompleteInput(productCount));
+      const qtyLabel = document.createElement("label");
+      qtyLabel.innerHTML = `Quantity:
+        <select name="qty${productCount}" required>
+          ${[...Array(10)].map((_, i) => `<option>${i + 1}</option>`).join('')}
+        </select>`;
+      div.appendChild(qtyLabel);
+      document.getElementById("product-list").appendChild(div);
+      productCount++;
+    }
+
+    async function initializeForm() {
+      await fetchInventory();
+      document.getElementById("product-list").innerHTML = "";
+      productCount = 0;
+      addProduct();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      initializeForm();
+      document.getElementById("checkout-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        const payload = {
+          timestamp: new Date().toISOString(),
+          location: data.get("location"),
+          customer: data.get("customer"),
+          technician: data.get("technician"),
+          products: []
+        };
+
+        for (let i = 0; i < productCount; i++) {
+          const name = data.get(`product${i}`);
+          const qty = data.get(`qty${i}`);
+          if (name && qty) {
+            payload.products.push({ name, qty });
+          }
+        }
+
+        // Call your Apps Script Web App endpoint here
+        try {
+          await fetch("https://script.google.com/macros/s/AKfycbzfkv59TACVtAjWJ5lOtK-slFHxIreP4Yd5fx2iKmXGJo97i9ELm2_e4PMVk3UxiJDf/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          alert("Submission sent!");
+          form.reset();
+          await initializeForm();
+        } catch (err) {
+          alert("Submission failed.");
+        }
+      });
     });
   </script>
 </body>
