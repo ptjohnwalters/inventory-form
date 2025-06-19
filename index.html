@@ -720,6 +720,23 @@ async function fetchInventory() {
 }
 
     // Initial product row
+    function addProduct() {
+  if (productCount >= maxProducts) {
+    alert("Max 10 products allowed");
+    return;
+  }
+  const div = document.createElement("div");
+  div.className = "product-group";
+  div.appendChild(createAutocompleteInput(productCount));
+  const qtyLabel = document.createElement("label");
+  qtyLabel.innerHTML = `Quantity:
+    <select name="qty${productCount}" required>
+      ${[...Array(10)].map((_, i) => `<option>${i + 1}</option>`).join('')}
+    </select>`;
+  div.appendChild(qtyLabel);
+  document.getElementById("product-list").appendChild(div);
+  productCount++;
+}
    async function initializeForm() {
   await fetchInventory();
   document.getElementById("product-list").innerHTML = "";
