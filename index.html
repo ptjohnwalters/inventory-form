@@ -2,20 +2,59 @@
 <html>
 <head>
   <title>Inventory Checkout Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: Arial, sans-serif;
-      margin: 2rem;
+      margin: 0;
+      padding: 0 1rem;
+      background: #fafbfc;
+      min-height: 100vh;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1.5rem;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 1.2rem 1rem 1rem 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .product-group {
-      border: 1px solid #ccc;
-      padding: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem 0.7rem 0.7rem 0.7rem;
       margin-bottom: 1rem;
       position: relative;
+      background: #f7f8fa;
     }
     label {
       display: block;
-      margin-top: 0.5rem;
+      margin-top: 0.8rem;
+      font-size: 1rem;
+    }
+    input[type="text"], select {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 0.5rem 0.4rem;
+      margin-top: 0.2rem;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+    input[type="text"]:focus, select:focus {
+      outline: none;
+      border-color: #007bff;
     }
     .autocomplete-results {
       position: absolute;
@@ -24,17 +63,63 @@
       z-index: 99;
       max-height: 150px;
       overflow-y: auto;
-      width: 90%;
+      width: 100%;
       left: 0;
-      top: 68px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      top: 64px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.13);
     }
     .autocomplete-result {
-      padding: 6px 10px;
+      padding: 10px 15px;
       cursor: pointer;
+      font-size: 1.05rem;
     }
-    .autocomplete-result:hover {
-      background: #f0f0f0;
+    .autocomplete-result:hover, .autocomplete-result:active {
+      background: #e8efff;
+    }
+    button[type="button"], button[type="submit"] {
+      display: block;
+      width: 100%;
+      margin: 0.8rem 0 0 0;
+      font-size: 1.15rem;
+      padding: 0.7rem;
+      background: #007bff;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    button[type="button"]:active, button[type="submit"]:active,
+    button[type="button"]:hover, button[type="submit"]:hover {
+      background: #0056b3;
+    }
+    @media (max-width: 500px) {
+      body {
+        padding: 0 0.2rem;
+      }
+      form {
+        max-width: 100%;
+        padding: 0.7rem 0.3rem 0.8rem 0.3rem;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .product-group {
+        padding: 0.8rem 0.3rem 0.5rem 0.3rem;
+      }
+      h2 {
+        font-size: 1.15rem;
+        margin-top: 0.5rem;
+      }
+      button[type="button"], button[type="submit"] {
+        font-size: 1rem;
+        padding: 0.6rem;
+      }
+      .autocomplete-results {
+        font-size: 0.98rem;
+        max-height: 120px;
+        top: 58px;
+      }
     }
   </style>
 </head>
@@ -44,7 +129,7 @@
     <div id="product-list"></div>
 
     <button type="button" onclick="addProduct()">Add Product</button>
-    <br><br>
+    <br>
 
     <label>Location:
       <select name="location" required>
@@ -63,7 +148,6 @@
       <input type="text" name="technician" required>
     </label>
 
-    <br>
     <button type="submit">Submit</button>
   </form>
 
@@ -560,7 +644,7 @@
       wrapper.style.position = "relative";
       wrapper.innerHTML = `
         <label>Part # / Product Name:
-          <input type="text" name="product${idx}" required autocomplete="off" style="width: 90%;">
+          <input type="text" name="product${idx}" required autocomplete="off">
           <div class="autocomplete-results" style="display:none;"></div>
         </label>
       `;
