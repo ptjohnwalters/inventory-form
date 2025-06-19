@@ -638,78 +638,96 @@
 
     let productCount = 0;
     const maxProducts = 10;
+let inventory = {};
 
-    function createAutocompleteInput(idx) {
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
-      wrapper.innerHTML = `
-        <label>Part # / Product Name:
-          <input type="text" name="product${idx}" required autocomplete="off">
-          <div class="autocomplete-results" style="display:none;"></div>
-        </label>
-      `;
-      const input = wrapper.querySelector("input");
-      const results = wrapper.querySelector(".autocomplete-results");
+async function fetchInventory() {
+  // Replace this URL with your actual Apps Script web app URL for doGet
+  const url = "https://script.google.com/macros/s/AKfycbzfkv59TACVtAjWJ5lOtK-slFHxIreP4Yd5fx2iKmXGJo97i9ELm2_e4PMVk3UxiJDf/exec";
+  try {
+    const res = await fetch(url);
+    inventory = await res.json();
+  } catch (err) {
+    inventory = {};
+    alert("Could not load inventory.");
+  }
+}
+    
+   function createAutocompleteInput(idx) {
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "relative";
+  wrapper.innerHTML = `
+    <label>Part # / Product Name:
+      <input type="text" name="product${idx}" required autocomplete="off">
+      <div class="autocomplete-results" style="display:none;"></div>
+    </label>
+    <div>
+      <strong>Quantity on hand:</strong>
+      <span class="qty-on-hand" id="qty-on-hand-${idx}">-</span>
+    </div>
+  `;
+  const input = wrapper.querySelector("input");
+  const results = wrapper.querySelector(".autocomplete-results");
+  const qtySpan = wrapper.querySelector(`#qty-on-hand-${idx}`);
 
-      input.addEventListener("input", function() {
-        const val = input.value.trim().toLowerCase();
-        if (!val) {
-          results.style.display = "none";
-          results.innerHTML = "";
-          return;
-        }
-        const matches = products.filter(p => p.toLowerCase().includes(val)).slice(0, 10);
-        if (!matches.length) {
-          results.style.display = "none";
-          results.innerHTML = "";
-          return;
-        }
-        results.innerHTML = matches.map(m => `<div class="autocomplete-result">${m}</div>`).join("");
-        results.style.display = "block";
-      });
-
-      // Click to select
-      results.addEventListener("mousedown", function(e) {
-        if (e.target.classList.contains("autocomplete-result")) {
-          input.value = e.target.textContent;
-          results.style.display = "none";
-          results.innerHTML = "";
-        }
-      });
-
-      // Hide on blur
-      input.addEventListener("blur", function() {
-        setTimeout(() => {
-          results.style.display = "none";
-        }, 200);
-      });
-
-      return wrapper;
+  function showQty() {
+    const val = input.value.trim();
+    if (inventory && inventory[val] !== undefined && inventory[val] !== "") {
+      qtySpan.textContent = inventory[val];
+    } else {
+      qtySpan.textContent = "-";
     }
+  }
 
-    function addProduct() {
-      if (productCount >= maxProducts) {
-        alert("Max 10 products allowed");
-        return;
-      }
-      const div = document.createElement("div");
-      div.className = "product-group";
-      // Add search bar
-      div.appendChild(createAutocompleteInput(productCount));
-      // Add qty
-      const qtyLabel = document.createElement("label");
-      qtyLabel.innerHTML = `Quantity:
-        <select name="qty${productCount}" required>
-          ${[...Array(10)].map((_, i) => `<option>${i + 1}</option>`).join('')}
-        </select>`;
-      div.appendChild(qtyLabel);
-
-      document.getElementById("product-list").appendChild(div);
-      productCount++;
+  input.addEventListener("input", function() {
+    const val = input.value.trim().toLowerCase();
+    if (!val) {
+      results.style.display = "none";
+      results.innerHTML = "";
+      qtySpan.textContent = "-";
+      return;
     }
+    const matches = products.filter(p => p.toLowerCase().includes(val)).slice(0, 10);
+    if (!matches.length) {
+      results.style.display = "none";
+      results.innerHTML = "";
+      qtySpan.textContent = "-";
+      return;
+    }
+    results.innerHTML = matches.map(m => `<div class="autocomplete-result">${m}</div>`).join("");
+    results.style.display = "block";
+    showQty();
+  });
+
+  results.addEventListener("mousedown", function(e) {
+    if (e.target.classList.contains("autocomplete-result")) {
+      input.value = e.target.textContent;
+      results.style.display = "none";
+      results.innerHTML = "";
+      showQty();
+    }
+  });
+
+  input.addEventListener("blur", function() {
+    setTimeout(() => {
+      results.style.display = "none";
+      showQty();
+    }, 200);
+  });
+
+  input.addEventListener("change", showQty);
+
+  return wrapper;
+}
 
     // Initial product row
-    addProduct();
+   async function initializeForm() {
+  await fetchInventory();
+  document.getElementById("product-list").innerHTML = "";
+  productCount = 0;
+  addProduct();
+}
+
+initializeForm();
 
     document.getElementById("checkout-form").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -740,10 +758,8 @@
           body: JSON.stringify(payload)
         });
         alert("Submission sent!");
-        form.reset();
-        document.getElementById("product-list").innerHTML = "";
-        productCount = 0;
-        addProduct();
+form.reset();
+await initializeForm();
       } catch (err) {
         alert("Submission failed.");
       }
